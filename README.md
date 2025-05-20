@@ -1,1 +1,1 @@
-# blender_script
+# Blender Scriptの練習用
