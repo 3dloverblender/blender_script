@@ -2,6 +2,13 @@ import bpy
 import bmesh
 import math
 
+# すべてのメッシュオブジェクトを削除する
+def delete_mesh_objects():
+    for obj in bpy.data.objects:
+        if obj.type == 'MESH':
+            bpy.data.objects.remove(obj)
+
+#　円のポリゴンを作成する関数　 
 def create_circle_polygon():
     # メッシュを作成する
     new_mesh = bpy.data.meshes.new("Circle")
@@ -39,8 +46,12 @@ def create_circle_polygon():
         v2 = verts[i + 1]
         # エッジを作成
         bm.edges.new((v1, v2))
-    
+    # 最後の頂点と最初の頂点を結ぶ
+    bm.edges.new((verts[-1], verts[0]))
+
     # BMeshをメッシュオブジェクトに変換する
     bm.to_mesh(new_mesh)
+
+delete_mesh_objects()
 
 create_circle_polygon()
