@@ -8,8 +8,8 @@ def delete_mesh_objects():
         if obj.type == 'MESH':
             bpy.data.objects.remove(obj)
 
-#　円のポリゴンを作成する関数　 
-def create_spring_polygon():
+# バネのメッシュを作成する
+def create_spring_mesh():
     # メッシュを作成する
     new_mesh = bpy.data.meshes.new("Spring")
     # オブジェクトを作成する
@@ -57,7 +57,15 @@ def create_spring_polygon():
     
     # BMeshをメッシュオブジェクトに変換する
     bm.to_mesh(new_mesh)
-
+    # カーブに変換する
+    bpy.ops.object.convert(target='CURVE')
+    # カーブのへベル深度を設定する
+    bpy.data.curves["Spring"].bevel_depth = 0.2
+    # オブジェクトを選択状態にする
+    new_obj.select_set(True)
+    # メッシュに変換する
+    bpy.ops.object.convert(target='MESH')
+    
 delete_mesh_objects()
 
-create_spring_polygon()
+create_spring_mesh()
