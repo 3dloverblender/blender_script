@@ -24,31 +24,30 @@ class SAMPLE_OT_CreateScrewMesh(bpy.types.Operator):
     # オペレーターの説明
     bl_description = "スクリュー形メッシュを作成します"
     bl_options = {'REGISTER', 'UNDO'}
-
-#    num_sides: bpy.props.IntProperty(
-#        name="角数",
-#        description="星形メッシュの角数",
-#        default=10,
-#        min=4,
-#        max=20
-#    )
-
-#    radius: bpy.props.FloatProperty(
-#        name="サイズ",
-#        description="星形メッシュのサイズ",
-#        default=100.0,
-#        min=1.0,
-#        max=1000.0
-#    )
+    # 巻き回数
+    screw_count: bpy.props.IntProperty(
+        name = "巻き回数",
+        description = "スクリューの巻き回数",
+        default = 1,
+        min = 1,
+    )
+    # 半径
+    radius: bpy.props.FloatProperty(
+        name = "半径",
+        description = "スクリューの半径",
+        default = 1.0,
+        min = 0.1,
+        max = 100.0,
+    )
     # オペレータで実行する内容
     def execute(self, context):
-#        num_sides = self.num_sides
-#        radius = self.radius
+        screw_count = self.screw_count
+        radius = self.radius
 
         # メッシュを作成する
-        new_mesh = bpy.data.meshes.new("Spring")
+        new_mesh = bpy.data.meshes.new("Screw")
         # オブジェクトを作成する
-        new_obj = bpy.data.objects.new("Spring", new_mesh)
+        new_obj = bpy.data.objects.new("Screw", new_mesh)
         # 現在のシーンにオブジェクトをリンクさせる
         bpy.context.scene.collection.objects.link(new_obj)
         # 作成したオブジェクトをアクティブオブジェクトにする
@@ -59,23 +58,19 @@ class SAMPLE_OT_CreateScrewMesh(bpy.types.Operator):
         # BMeshを作成する
         bm = bmesh.new()
         verts = []
-        # 半径
-        r = 1.0
         # 角度
         deg = 10
         # 初期z座標
         z = 0.0
         # z座標の増加量
         dz = 0.01
-        # 巻く回数
-        times = 10
         # バネの頂点を作成する
-        for deg in range(0, 360 * times, deg):
+        for deg in range(0, 360 * screw_count, deg):
             # 角度をラジアンに変換
             rad = math.radians(deg)
             # x, y座標を計算
-            x = r * math.cos(rad)
-            y = r * math.sin(rad)
+            x = radius * math.cos(rad)
+            y = radius * math.sin(rad)
             # z座標を計算
             z += dz
             # 頂点を作成
@@ -95,7 +90,7 @@ class SAMPLE_OT_CreateScrewMesh(bpy.types.Operator):
         # カーブに変換する
         bpy.ops.object.convert(target='CURVE')
         # カーブのへベル深度を設定する
-        bpy.data.curves["Spring"].bevel_depth = 0.2
+        bpy.data.curves["Screw"].bevel_depth = 0.2
         # オブジェクトを選択状態にする
         new_obj.select_set(True)
         # メッシュに変換する
