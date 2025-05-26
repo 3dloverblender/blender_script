@@ -39,15 +39,25 @@ class SAMPLE_OT_CreateScrewMesh(bpy.types.Operator):
         min = 0.1,
         max = 100.0,
     )
+    # ベベル深度
+    bevel_depth: bpy.props.FloatProperty(
+        name = "ベベル深度",
+        description = "スクリューのベベル深度",
+        default = 0.2,
+        min = 0.0,
+        max = 10.0,
+    )
     # オペレータで実行する内容
     def execute(self, context):
+        name = "Screw"
         screw_count = self.screw_count
         radius = self.radius
+        bevel_depth = self.bevel_depth
 
         # メッシュを作成する
-        new_mesh = bpy.data.meshes.new("Screw")
+        new_mesh = bpy.data.meshes.new(name)
         # オブジェクトを作成する
-        new_obj = bpy.data.objects.new("Screw", new_mesh)
+        new_obj = bpy.data.objects.new(name, new_mesh)
         # 現在のシーンにオブジェクトをリンクさせる
         bpy.context.scene.collection.objects.link(new_obj)
         # 作成したオブジェクトをアクティブオブジェクトにする
@@ -90,7 +100,7 @@ class SAMPLE_OT_CreateScrewMesh(bpy.types.Operator):
         # カーブに変換する
         bpy.ops.object.convert(target='CURVE')
         # カーブのへベル深度を設定する
-        bpy.data.curves["Screw"].bevel_depth = 0.2
+        bpy.data.curves[name].bevel_depth = bevel_depth
         # オブジェクトを選択状態にする
         new_obj.select_set(True)
         # メッシュに変換する
