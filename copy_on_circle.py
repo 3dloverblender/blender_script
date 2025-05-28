@@ -21,10 +21,6 @@ def copy_on_circle(deg=10):
         bpy.context.collection.objects.link(new_obj)
         # 新しいオブジェクトを回転して配置
         new_obj.rotation_euler = (0, 0, rad) 
-        # 新しいオブジェクトを選択
-        #new_obj.select_set(True)
-        # 新しいオブジェクトをアクティブ化
-        #bpy.context.view_layer.objects.active = new_obj
 
     # オブジェクトを結合
     bpy.ops.object.join()
