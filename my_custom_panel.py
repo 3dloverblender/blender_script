@@ -15,6 +15,63 @@ bl_info = {
     "category": "Sample"
 }
 
+# 3Dカーソルをワールド原点へ移動するオペレーター
+class SAMPLE_OT_CursorToWorldOrigin(bpy.types.Operator):
+    # オペレーターID
+    bl_idname = "sample.cursor_to_world_origin"
+    # オペレーターの表示名
+    bl_label = "3Dカーソルをワールド原点へ"
+    # オペレーターの説明
+    bl_description = "3Dカーソルをワールド原点へ移動します"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    # オペレータで実行する内容
+    def execute(self, context):
+        # 3Dカーソルの位置をワールド原点に設定
+        bpy.context.scene.cursor.location = (0.0, 0.0, 0.0)
+        print("3Dカーソルをワールド原点へ移動しました。")
+        return {'FINISHED'}
+
+# 3Dカーソルを選択物にスナップするオペレーター
+class SAMPLE_OT_CursorToSelected(bpy.types.Operator):
+    # オペレーターID
+    bl_idname = "sample.cursor_to_selected"
+    # オペレーターの表示名
+    bl_label = "3Dカーソルを選択物へ"
+    # オペレーターの説明
+    bl_description = "3Dカーソルを選択物にスナップします"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    # オペレータで実行する内容
+    def execute(self, context):
+        # 3Dカーソルを選択物にスナップする
+        bpy.ops.view3d.snap_cursor_to_selected()
+        print("3Dカーソルを選択物の中心へ移動しました。")
+        return {'FINISHED'}
+
+# オブジェクトの原点を3Dカーソルの位置に移動するオペレーター
+class SAMPLE_OT_OriginToCursor(bpy.types.Operator):
+    # オペレーターID
+    bl_idname = "sample.origin_to_cursor"
+    # オペレーターの表示名
+    bl_label = "オブジェクトの原点を3Dカーソルへ"
+    # オペレーターの説明
+    bl_description = "選択されたオブジェクトの原点を3Dカーソルの位置に移動します"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    # オペレータで実行する内容
+    def execute(self, context):
+        # 選択されたオブジェクトを取得
+        obj = bpy.context.active_object
+        if obj is None:
+            print("No active object selected.")
+            return {'CANCELLED'}
+        
+        # オブジェクトの原点を3Dカーソルの位置に移動
+        bpy.ops.object.origin_set(type='ORIGIN_CURSOR', center='MEDIAN')
+        print("オブジェクトの原点を3Dカーソルへ移動しました。")
+        return {'FINISHED'}
+
 # 選択したオブジェクトの重複頂点をすべてマージするオペレーター
 class SAMPLE_OT_MergeDoubles(bpy.types.Operator):
     # オペレーターID
@@ -111,6 +168,7 @@ class SAMPLE_OT_CopyOnCircleJoin(bpy.types.Operator):
 
         return {'FINISHED'}
 
+# カスタムパネルの定義
 class SAMPLE_PT_Custom(bpy.types.Panel):
 
     bl_idname = "SAMPLE_PT_Custom"
@@ -125,12 +183,19 @@ class SAMPLE_PT_Custom(bpy.types.Panel):
 
     def draw(self, context):
         layout = self.layout
-        layout.operator(SAMPLE_OT_MergeDoubles.bl_idname, text="重複頂点をマージ", icon='MOD_MESHDEFORM')
+        layout.operator(SAMPLE_OT_CursorToWorldOrigin.bl_idname, text="3Dカーソルをワールド原点へ", icon='CURSOR')
+        layout.operator(SAMPLE_OT_CursorToSelected.bl_idname, text="3Dカーソルを選択物へ", icon='CURSOR')
+        layout.operator(SAMPLE_OT_OriginToCursor.bl_idname, text="オブジェクトの原点を3Dカーソルへ", icon='CURSOR')
+        layout.separator()
+        layout.operator(SAMPLE_OT_MergeDoubles.bl_idname, text="重複頂点をマージ", icon='MESH_CUBE')
         layout.separator()
         layout.operator(SAMPLE_OT_CopyOnCircleJoin.bl_idname, text="円状コピー結合", icon='MOD_ARRAY')
 
-
+# 登録するクラスのリスト
 classes = [
+    SAMPLE_OT_CursorToWorldOrigin,
+    SAMPLE_OT_CursorToSelected,
+    SAMPLE_OT_OriginToCursor,
     SAMPLE_OT_MergeDoubles,
     SAMPLE_OT_CopyOnCircleJoin,
     SAMPLE_PT_Custom,
