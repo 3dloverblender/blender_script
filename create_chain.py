@@ -2,7 +2,7 @@ import bpy
 import math
 
 # 鎖状のオブジェクトを作成
-def create_chain(interval, count):
+def create_chain(offset, count, rot=90):
     active_obj = bpy.context.active_object
 
     if active_obj is None or active_obj.type != 'MESH':
@@ -27,6 +27,8 @@ def create_chain(interval, count):
         c2 = chain_collection.objects[i + 1]
 
         c2.parent = c1
-        c2.location = (interval, 0, 0)
+        c2.location = (offset, 0, 0)
+        # 回転を設定
+        c2.rotation_euler = (math.radians(rot), 0, 0)
 
-create_chain(2.0, 10)
+create_chain(1.5, 15)
