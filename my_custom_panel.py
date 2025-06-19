@@ -72,6 +72,29 @@ class SAMPLE_OT_OriginToCursor(bpy.types.Operator):
         print("オブジェクトの原点を3Dカーソルへ移動しました。")
         return {'FINISHED'}
 
+# 選択したオブジェクトの回転とスケールを適用するオペレーター
+class SAMPLE_OT_ApplyRotationScale(bpy.types.Operator):
+    # オペレーターID
+    bl_idname = "sample.apply_rotation_scale"
+    # オペレーターの表示名
+    bl_label = "回転とスケールを適用"
+    # オペレーターの説明
+    bl_description = "選択されたオブジェクトの回転とスケールを適用します"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    # オペレータで実行する内容
+    def execute(self, context):
+        # 選択されたオブジェクトを取得
+        obj = bpy.context.active_object
+        if obj is None:
+            print("No active object selected.")
+            return {'CANCELLED'}
+
+        # 回転とスケールを適用
+        bpy.ops.object.transform_apply(location=False, rotation=True, scale=True)
+        print("回転とスケールを適用しました。")
+        return {'FINISHED'}
+
 # 選択したオブジェクトの重複頂点をすべてマージするオペレーター
 class SAMPLE_OT_MergeDoubles(bpy.types.Operator):
     # オペレーターID
@@ -186,6 +209,7 @@ class SAMPLE_PT_Custom(bpy.types.Panel):
         layout.operator(SAMPLE_OT_CursorToWorldOrigin.bl_idname, text="3Dカーソルをワールド原点へ", icon='CURSOR')
         layout.operator(SAMPLE_OT_CursorToSelected.bl_idname, text="3Dカーソルを選択物へ", icon='CURSOR')
         layout.operator(SAMPLE_OT_OriginToCursor.bl_idname, text="オブジェクトの原点を3Dカーソルへ", icon='CURSOR')
+        layout.operator(SAMPLE_OT_ApplyRotationScale.bl_idname, text="回転とスケールを適用", icon='FILE_TICK')
         layout.separator()
         layout.operator(SAMPLE_OT_MergeDoubles.bl_idname, text="重複頂点をマージ", icon='MESH_CUBE')
         layout.separator()
@@ -196,6 +220,7 @@ classes = [
     SAMPLE_OT_CursorToWorldOrigin,
     SAMPLE_OT_CursorToSelected,
     SAMPLE_OT_OriginToCursor,
+    SAMPLE_OT_ApplyRotationScale,
     SAMPLE_OT_MergeDoubles,
     SAMPLE_OT_CopyOnCircleJoin,
     SAMPLE_PT_Custom,
