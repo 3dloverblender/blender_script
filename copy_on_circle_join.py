@@ -14,7 +14,7 @@ bl_info = {
     "tracker_url": "",
     "category": "Sample"
 }
-# オペレータークラスを継承
+# オペレータークラスを継承x
 class SAMPLE_OT_CopyOnCircleJoin(bpy.types.Operator):
     # オペレーターID
     bl_idname = "sample.copy_on_cirlce_join"
