@@ -119,6 +119,52 @@ class SAMPLE_OT_MergeDoubles(bpy.types.Operator):
         print("重複頂点をマージしました。")
         return {'FINISHED'}
 
+# トランスフォームピボットポイントをアクティブ要素に設定して指定された軸を0倍にスケールするオペレーター
+class SAMPLE_OT_ScaleToZero(bpy.types.Operator):
+    # オペレーターID
+    bl_idname = "sample.scale_to_zero"
+    # オペレーターの表示名
+    bl_label = "アクティブ要素を基準に指定軸で揃える"
+    # オペレーターの説明
+    bl_description = "アクティブ要素を基準に指定軸で座標を揃えます"
+    bl_options = {'REGISTER', 'UNDO'}
+    
+    # 座標軸
+    axis: bpy.props.EnumProperty(
+        name = "座標軸",
+        description = "揃える座標軸",
+        items = [
+            ('X', "X軸", "X座標で揃える"),
+            ('Y', "Y軸", "Y座標で揃える"),
+            ('Z', "Z軸", "Z座標で揃える"),
+        ],
+        default = 'Z',
+    )
+
+    # オペレータで実行する内容
+    def execute(self, context):
+        axis = self.axis
+
+        # 選択されたオブジェクトを取得
+        obj = bpy.context.active_object
+        if obj is None:
+            print("No active object selected.")
+            return {'CANCELLED'}
+
+        # トランスフォームピボットポイントをアクティブ要素に設定
+        bpy.context.scene.tool_settings.transform_pivot_point = 'ACTIVE_ELEMENT'
+        
+        # 指定された軸を0倍にスケール
+        if axis == 'X':
+            obj.scale.x = 0.0
+        elif axis == 'Y':
+            obj.scale.y = 0.0
+        else:
+            obj.scale.z = 0.0
+
+        print(f"{axis}軸を0倍にスケールしました。")
+        return {'FINISHED'}
+
 # 選択されたオブジェクトを円状にコピーして結合するオペレーター
 class SAMPLE_OT_CopyOnCircleJoin(bpy.types.Operator):
     # オペレーターID
@@ -213,6 +259,8 @@ class SAMPLE_PT_Custom(bpy.types.Panel):
         layout.separator()
         layout.operator(SAMPLE_OT_MergeDoubles.bl_idname, text="重複頂点をマージ", icon='MESH_CUBE')
         layout.separator()
+        layout.operator(SAMPLE_OT_ScaleToZero.bl_idname, text="アクティブ要素を基準に指定軸で揃える", icon='SNAP_PEEL_OBJECT')
+        layout.separator()
         layout.operator(SAMPLE_OT_CopyOnCircleJoin.bl_idname, text="円状コピー結合", icon='MOD_ARRAY')
 
 # 登録するクラスのリスト
@@ -222,6 +270,7 @@ classes = [
     SAMPLE_OT_OriginToCursor,
     SAMPLE_OT_ApplyRotationScale,
     SAMPLE_OT_MergeDoubles,
+    SAMPLE_OT_ScaleToZero,
     SAMPLE_OT_CopyOnCircleJoin,
     SAMPLE_PT_Custom,
 ]
