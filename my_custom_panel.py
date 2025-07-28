@@ -156,11 +156,14 @@ class SAMPLE_OT_ScaleToZero(bpy.types.Operator):
         
         # 指定された軸を0倍にスケール
         if axis == 'X':
-            obj.scale.x = 0.0
+            # X座標のスケールを0にする
+            bpy.ops.transform.resize(value=(0.0, 1.0, 1.0))
         elif axis == 'Y':
-            obj.scale.y = 0.0
-        else:
-            obj.scale.z = 0.0
+            # Y座標のスケールを0にする
+            bpy.ops.transform.resize(value=(1.0, 0.0, 1.0))
+        elif axis == 'Z':
+            # Z座標のスケールを0にする
+            bpy.ops.transform.resize(value=(1.0, 1.0, 0.0))
 
         print(f"{axis}軸を0倍にスケールしました。")
         return {'FINISHED'}
