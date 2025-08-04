@@ -255,14 +255,14 @@ class SAMPLE_PT_Custom(bpy.types.Panel):
 
     def draw(self, context):
         layout = self.layout
-        layout.operator(SAMPLE_OT_CursorToWorldOrigin.bl_idname, text="3Dカーソル→ワールド原点へ", icon='CURSOR')
-        layout.operator(SAMPLE_OT_CursorToSelected.bl_idname, text="3Dカーソル→選択物", icon='CURSOR')
-        layout.operator(SAMPLE_OT_OriginToCursor.bl_idname, text="オブジェクトの原点→3Dカーソル", icon='CURSOR')
+        layout.operator(SAMPLE_OT_CursorToWorldOrigin.bl_idname, text="3Dカーソル → ワールド原点", icon='CURSOR')
+        layout.operator(SAMPLE_OT_CursorToSelected.bl_idname, text="3Dカーソル → 選択物", icon='CURSOR')
+        layout.operator(SAMPLE_OT_OriginToCursor.bl_idname, text="オブジェクト原点 → 3Dカーソル", icon='CURSOR')
         layout.operator(SAMPLE_OT_ApplyRotationScale.bl_idname, text="回転スケール適用", icon='FILE_TICK')
         layout.separator()
         layout.operator(SAMPLE_OT_MergeDoubles.bl_idname, text="重複頂点マージ", icon='MESH_CUBE')
         layout.separator()
-        layout.operator(SAMPLE_OT_ScaleToZero.bl_idname, text="アクティブ要素を基準に指定軸で揃える", icon='SNAP_PEEL_OBJECT')
+        layout.operator(SAMPLE_OT_ScaleToZero.bl_idname, text="アクティブ要素基準 → 座標統一", icon='SNAP_PEEL_OBJECT')
         layout.separator()
         layout.operator(SAMPLE_OT_CopyOnCircleJoin.bl_idname, text="円状コピー結合", icon='MOD_ARRAY')
 
