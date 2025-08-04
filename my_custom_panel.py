@@ -20,7 +20,7 @@ class SAMPLE_OT_CursorToWorldOrigin(bpy.types.Operator):
     # オペレーターID
     bl_idname = "sample.cursor_to_world_origin"
     # オペレーターの表示名
-    bl_label = "3Dカーソルをワールド原点へ"
+    bl_label = "3Dカーソル→ワールド原点"
     # オペレーターの説明
     bl_description = "3Dカーソルをワールド原点へ移動します"
     bl_options = {'REGISTER', 'UNDO'}
@@ -37,7 +37,7 @@ class SAMPLE_OT_CursorToSelected(bpy.types.Operator):
     # オペレーターID
     bl_idname = "sample.cursor_to_selected"
     # オペレーターの表示名
-    bl_label = "3Dカーソルを選択物へ"
+    bl_label = "3Dカーソル→選択物"
     # オペレーターの説明
     bl_description = "3Dカーソルを選択物にスナップします"
     bl_options = {'REGISTER', 'UNDO'}
@@ -54,7 +54,7 @@ class SAMPLE_OT_OriginToCursor(bpy.types.Operator):
     # オペレーターID
     bl_idname = "sample.origin_to_cursor"
     # オペレーターの表示名
-    bl_label = "オブジェクトの原点を3Dカーソルへ"
+    bl_label = "オブジェクト原点→3Dカーソル"
     # オペレーターの説明
     bl_description = "選択されたオブジェクトの原点を3Dカーソルの位置に移動します"
     bl_options = {'REGISTER', 'UNDO'}
@@ -77,7 +77,7 @@ class SAMPLE_OT_ApplyRotationScale(bpy.types.Operator):
     # オペレーターID
     bl_idname = "sample.apply_rotation_scale"
     # オペレーターの表示名
-    bl_label = "回転とスケールを適用"
+    bl_label = "回転スケール適用"
     # オペレーターの説明
     bl_description = "選択されたオブジェクトの回転とスケールを適用します"
     bl_options = {'REGISTER', 'UNDO'}
@@ -100,7 +100,7 @@ class SAMPLE_OT_MergeDoubles(bpy.types.Operator):
     # オペレーターID
     bl_idname = "sample.merge_doubles"
     # オペレーターの表示名
-    bl_label = "重複頂点をマージ"
+    bl_label = "重複頂点マージ"
     # オペレーターの説明
     bl_description = "選択されたオブジェクトの重複頂点をすべてマージします"
     bl_options = {'REGISTER', 'UNDO'}
