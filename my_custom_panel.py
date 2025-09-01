@@ -72,6 +72,29 @@ class SAMPLE_OT_OriginToCursor(bpy.types.Operator):
         print("オブジェクトの原点を3Dカーソルへ移動しました。")
         return {'FINISHED'}
 
+# 選択したオブジェクトをx軸に90度回転するオペレーター
+class SAMPLE_OT_RotateX90(bpy.types.Operator):
+    # オペレーターID
+    bl_idname = "sample.rotate_x_90"
+    # オペレーターの表示名
+    bl_label = "X軸に90度回転"
+    # オペレーターの説明
+    bl_description = "選択されたオブジェクトをX軸に90度回転します"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    # オペレータで実行する内容
+    def execute(self, context):
+        # 選択されたオブジェクトを取得
+        obj = bpy.context.active_object
+        if obj is None:
+            print("No active object selected.")
+            return {'CANCELLED'}
+
+        # X軸に90度回転
+        obj.rotation_euler[0] += math.radians(90)
+        print("オブジェクトをX軸に90度回転しました。")
+        return {'FINISHED'}
+
 # 選択したオブジェクトの回転とスケールを適用するオペレーター
 class SAMPLE_OT_ApplyRotationScale(bpy.types.Operator):
     # オペレーターID
@@ -258,6 +281,8 @@ class SAMPLE_PT_Custom(bpy.types.Panel):
         layout.operator(SAMPLE_OT_CursorToWorldOrigin.bl_idname, text="3Dカーソル → ワールド原点", icon='CURSOR')
         layout.operator(SAMPLE_OT_CursorToSelected.bl_idname, text="3Dカーソル → 選択物", icon='CURSOR')
         layout.operator(SAMPLE_OT_OriginToCursor.bl_idname, text="オブジェクト原点 → 3Dカーソル", icon='CURSOR')
+        layout.separator()
+        layout.operator(SAMPLE_OT_RotateX90.bl_idname, text="X軸に90度回転", icon='DRIVER_ROTATIONAL_DIFFERENCE')
         layout.operator(SAMPLE_OT_ApplyRotationScale.bl_idname, text="回転スケール適用", icon='FILE_TICK')
         layout.separator()
         layout.operator(SAMPLE_OT_MergeDoubles.bl_idname, text="重複頂点マージ", icon='MESH_CUBE')
@@ -271,6 +296,7 @@ classes = [
     SAMPLE_OT_CursorToWorldOrigin,
     SAMPLE_OT_CursorToSelected,
     SAMPLE_OT_OriginToCursor,
+    SAMPLE_OT_RotateX90,
     SAMPLE_OT_ApplyRotationScale,
     SAMPLE_OT_MergeDoubles,
     SAMPLE_OT_ScaleToZero,
