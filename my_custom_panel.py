@@ -95,6 +95,52 @@ class SAMPLE_OT_RotateX90(bpy.types.Operator):
         print("オブジェクトをX軸に90度回転しました。")
         return {'FINISHED'}
 
+# 選択したオブジェクトをY軸に90度回転するオペレーター
+class SAMPLE_OT_RotateY90(bpy.types.Operator):
+    # オペレーターID
+    bl_idname = "sample.rotate_y_90"
+    # オペレーターの表示名
+    bl_label = "Y軸に90度回転"
+    # オペレーターの説明
+    bl_description = "選択されたオブジェクトをY軸に90度回転します"
+    bl_options = {'REGISTER', 'UNDO'}
+    
+    # オペレータで実行する内容
+    def execute(self, context):
+        # 選択されたオブジェクトを取得
+        obj = bpy.context.active_object
+        if obj is None:
+            print("No active object selected.")
+            return {'CANCELLED'}
+
+        # Y軸に90度回転
+        obj.rotation_euler[1] += math.radians(90)
+        print("オブジェクトをY軸に90度回転しました。")
+        return {'FINISHED'}
+
+# 選択したオブジェクトをZ軸に90度回転するオペレーター
+class SAMPLE_OT_RotateZ90(bpy.types.Operator):
+    # オペレーターID
+    bl_idname = "sample.rotate_z_90"
+    # オペレーターの表示名
+    bl_label = "Z軸に90度回転"
+    # オペレーターの説明
+    bl_description = "選択されたオブジェクトをZ軸に90度回転します"
+    bl_options = {'REGISTER', 'UNDO'}
+    
+    # オペレータで実行する内容
+    def execute(self, context):
+        # 選択されたオブジェクトを取得
+        obj = bpy.context.active_object
+        if obj is None:
+            print("No active object selected.")
+            return {'CANCELLED'}
+
+        # Z軸に90度回転
+        obj.rotation_euler[2] += math.radians(90)
+        print("オブジェクトをZ軸に90度回転しました。")
+        return {'FINISHED'} 
+
 # 選択したオブジェクトの回転とスケールを適用するオペレーター
 class SAMPLE_OT_ApplyRotationScale(bpy.types.Operator):
     # オペレーターID
@@ -283,6 +329,9 @@ class SAMPLE_PT_Custom(bpy.types.Panel):
         layout.operator(SAMPLE_OT_OriginToCursor.bl_idname, text="オブジェクト原点 → 3Dカーソル", icon='CURSOR')
         layout.separator()
         layout.operator(SAMPLE_OT_RotateX90.bl_idname, text="X軸に90度回転", icon='DRIVER_ROTATIONAL_DIFFERENCE')
+        layout.operator(SAMPLE_OT_RotateY90.bl_idname, text="Y軸に90度回転", icon='DRIVER_ROTATIONAL_DIFFERENCE')
+        layout.operator(SAMPLE_OT_RotateZ90.bl_idname, text="Z軸に90度回転", icon='DRIVER_ROTATIONAL_DIFFERENCE')
+        layout.separator()
         layout.operator(SAMPLE_OT_ApplyRotationScale.bl_idname, text="回転スケール適用", icon='FILE_TICK')
         layout.separator()
         layout.operator(SAMPLE_OT_MergeDoubles.bl_idname, text="重複頂点マージ", icon='MESH_CUBE')
@@ -297,6 +346,8 @@ classes = [
     SAMPLE_OT_CursorToSelected,
     SAMPLE_OT_OriginToCursor,
     SAMPLE_OT_RotateX90,
+    SAMPLE_OT_RotateY90,
+    SAMPLE_OT_RotateZ90,
     SAMPLE_OT_ApplyRotationScale,
     SAMPLE_OT_MergeDoubles,
     SAMPLE_OT_ScaleToZero,
