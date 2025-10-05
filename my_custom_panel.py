@@ -5,7 +5,7 @@ bl_info = {
     "name": "サンプルアドオン: 自分用カスタムパネル",
     "author": "3dloverblender",
     "version": (1, 0, 0),
-    "blender": (4, 4, 0),
+    "blender": (4, 5, 0),
     "location": "3Dビューポート > サイドバー > カスタム",
     "description": "自分なりによく使う機能をまとめたパネルアドオン",
     "warning": "",
@@ -70,6 +70,30 @@ class SAMPLE_OT_OriginToCursor(bpy.types.Operator):
         # オブジェクトの原点を3Dカーソルの位置に移動
         bpy.ops.object.origin_set(type='ORIGIN_CURSOR', center='MEDIAN')
         print("オブジェクトの原点を3Dカーソルへ移動しました。")
+        return {'FINISHED'}
+
+# 選択したオブジェクトを3Dカーソルの位置に移動するオペレーター
+class SAMPLE_OT_MoveToCursor(bpy.types.Operator):
+    # オペレーターID
+    bl_idname = "sample.move_to_cursor"
+    # オペレーターの表示名
+    bl_label = "選択物→3Dカーソル"
+    # オペレーターの説明
+    bl_description = "選択されたオブジェクトを3Dカーソルの位置に移動します"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    # オペレータで実行する内容
+    def execute(self, context):
+        # 選択されたオブジェクトを取得
+        obj = bpy.context.active_object
+        if obj is None:
+            print("No active object selected.")
+            return {'CANCELLED'}
+
+        # オブジェクトを3Dカーソルの位置に移動
+        cursor_location = bpy.context.scene.cursor.location
+        obj.location = cursor_location
+        print("オブジェクトを3Dカーソルの位置に移動しました。")
         return {'FINISHED'}
 
 # 選択したオブジェクトをx軸に90度回転するオペレーター
@@ -327,6 +351,7 @@ class SAMPLE_PT_Custom(bpy.types.Panel):
         layout.operator(SAMPLE_OT_CursorToWorldOrigin.bl_idname, text="3Dカーソル → ワールド原点", icon='CURSOR')
         layout.operator(SAMPLE_OT_CursorToSelected.bl_idname, text="3Dカーソル → 選択物", icon='CURSOR')
         layout.operator(SAMPLE_OT_OriginToCursor.bl_idname, text="オブジェクト原点 → 3Dカーソル", icon='CURSOR')
+        layout.operator(SAMPLE_OT_MoveToCursor.bl_idname, text="選択物 → 3Dカーソル", icon='CURSOR')
         layout.separator()
         layout.operator(SAMPLE_OT_RotateX90.bl_idname, text="X軸に90度回転", icon='DRIVER_ROTATIONAL_DIFFERENCE')
         layout.operator(SAMPLE_OT_RotateY90.bl_idname, text="Y軸に90度回転", icon='DRIVER_ROTATIONAL_DIFFERENCE')
@@ -345,6 +370,7 @@ classes = [
     SAMPLE_OT_CursorToWorldOrigin,
     SAMPLE_OT_CursorToSelected,
     SAMPLE_OT_OriginToCursor,
+    SAMPLE_OT_MoveToCursor,
     SAMPLE_OT_RotateX90,
     SAMPLE_OT_RotateY90,
     SAMPLE_OT_RotateZ90,
