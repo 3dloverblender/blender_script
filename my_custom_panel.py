@@ -246,7 +246,7 @@ class SAMPLE_OT_ScaleToZero(bpy.types.Operator):
 
         # トランスフォームピボットポイントをアクティブ要素に設定
         bpy.context.scene.tool_settings.transform_pivot_point = 'ACTIVE_ELEMENT'
-        
+
         # 指定された軸を0倍にスケール
         if axis == 'X':
             # X座標のスケールを0にする
@@ -259,6 +259,33 @@ class SAMPLE_OT_ScaleToZero(bpy.types.Operator):
             bpy.ops.transform.resize(value=(1.0, 1.0, 0.0))
 
         print(f"{axis}軸を0倍にスケールしました。")
+        return {'FINISHED'}
+
+# 選択されたオブジェクトにスピンを適用するオペレーター
+class SAMPLE_OT_SpinObjects(bpy.types.Operator):
+    # オペレーターID
+    bl_idname = "sample.spin_objects"
+    # オペレーターの表示名
+    bl_label = "スピン適用"
+    # オペレーターの説明
+    bl_description = "選択されたオブジェクトにスピンを適用します"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    # オペレータで実行する内容
+    def execute(self, context):
+        # 選択されたオブジェクトを取得
+        obj = bpy.context.active_object
+        if obj is None:
+            print("No active object selected.")
+            return {'CANCELLED'}
+
+        # スピンを適用（例: 360度、36ステップ）
+        bpy.ops.object.mode_set(mode='EDIT')
+        bpy.ops.mesh.select_all(action='SELECT')
+        bpy.ops.mesh.spin(steps=36, angle=math.radians(360), center=(0,0,0), axis=(0,0,1))
+        bpy.ops.object.mode_set(mode='OBJECT')
+
+        print("スピンを適用しました。")
         return {'FINISHED'}
 
 # カスタムパネルの定義
@@ -290,6 +317,8 @@ class SAMPLE_PT_Custom(bpy.types.Panel):
         layout.operator(SAMPLE_OT_MergeDoubles.bl_idname, text="重複頂点マージ", icon='MESH_CUBE')
         layout.separator()
         layout.operator(SAMPLE_OT_ScaleToZero.bl_idname, text="アクティブ要素基準 → 座標統一", icon='SNAP_PEEL_OBJECT')
+        layout.separator()
+        layout.operator(SAMPLE_OT_SpinObjects.bl_idname, text="スピン適用", icon='MOD_ARRAY')
 
 # 登録するクラスのリスト
 classes = [
@@ -303,6 +332,7 @@ classes = [
     SAMPLE_OT_ApplyRotationScale,
     SAMPLE_OT_MergeDoubles,
     SAMPLE_OT_ScaleToZero,
+    SAMPLE_OT_SpinObjects,
     SAMPLE_PT_Custom,
 ]
 
