@@ -403,7 +403,7 @@ classes = [
     SAMPLE_OT_RotateX90,
     SAMPLE_OT_RotateY90,
     SAMPLE_OT_RotateZ90,
-    SAMPLE_OT_ApplyRotationScale,
+    SAMPLE_OT_ApplyRotati
     SAMPLE_OT_MergeDoubles,
     SAMPLE_OT_ScaleToZero,
     SAMPLE_OT_SpinObjects,
