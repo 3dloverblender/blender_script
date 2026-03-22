@@ -5,7 +5,7 @@ bl_info = {
     "name": "サンプルアドオン: 自分用カスタムパネル",
     "author": "3dloverblender",
     "version": (1, 0, 0),
-    "blender": (4, 5, 0),
+    "blender": (5, 0, 0),
     "location": "3Dビューポート > サイドバー > カスタム",
     "description": "自分なりによく使う機能をまとめたパネルアドオン",
     "warning": "",
@@ -211,6 +211,61 @@ class SAMPLE_OT_ApplyRotationScale(bpy.types.Operator):
         print("回転とスケールを適用しました。")
         return {'FINISHED'}
 
+# 選択したアマーチュアのポーズをリセットするオペレーター
+class SAMPLE_OT_ResetPose(bpy.types.Operator):
+    # オペレーターID
+    bl_idname = "sample.reset_pose"
+    # オペレーターの表示名
+    bl_label = "ポーズリセット"
+    # オペレーターの説明
+    bl_description = "選択されたアマーチュアのポーズをリセットします"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    # オペレータで実行する内容
+    def execute(self, context):
+        # 選択されたオブジェクトを取得
+        obj = bpy.context.active_object
+        if obj is None or obj.type != 'ARMATURE':
+            print("No active armature selected.")
+            return {'CANCELLED'}
+
+        # ポーズモードに切り替え
+        bpy.ops.object.mode_set(mode='POSE')
+        # すべてのボーンを選択
+        bpy.ops.pose.select_all(action='SELECT')
+        # ポーズをリセット
+        bpy.ops.pose.rot_clear()
+        bpy.ops.pose.loc_clear()
+        bpy.ops.pose.scale_clear()
+        # オブジェクトモードに戻る
+        bpy.ops.object.mode_set(mode='OBJECT')
+
+        print("アマーチュアのポーズをリセットしました。")
+        return {'FINISHED'}
+
+# 現在のポーズをレストポーズとして適用するオペレーター
+class SAMPLE_OT_ApplyPoseAsRest(bpy.types.Operator):
+    # オペレーターID
+    bl_idname = "sample.apply_pose_as_rest"
+    # オペレーターの表示名
+    bl_label = "現在のポーズをレストポーズとして適用"
+    # オペレーターの説明
+    bl_description = "選択されたアマーチュアの現在のポーズをレストポーズとして適用します"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    # オペレータで実行する内容
+    def execute(self, context):
+        # 選択されたオブジェクトを取得
+        obj = bpy.context.active_object
+        if obj is None or obj.type != 'ARMATURE':
+            print("No active armature selected.")
+            return {'CANCELLED'}
+
+        # 現在のポーズをレストポーズとして適用
+        bpy.ops.pose_to_rest.apply()
+        print("現在のポーズをレストポーズとして適用しました。")
+        return {'FINISHED'}
+
 # 選択したオブジェクトの重複頂点をすべてマージするオペレーター
 class SAMPLE_OT_MergeDoubles(bpy.types.Operator):
     # オペレーターID
@@ -410,6 +465,9 @@ class SAMPLE_PT_Custom(bpy.types.Panel):
         layout.separator()
         layout.operator(SAMPLE_OT_ApplyRotationScale.bl_idname, text="回転スケール適用", icon='FILE_TICK')
         layout.separator()
+        layout.operator(SAMPLE_OT_ResetPose.bl_idname, text="ポーズリセット", icon='ARMATURE_DATA')
+        layout.operator(SAMPLE_OT_ApplyPoseAsRest.bl_idname, text="現在のポーズをレストポーズとして適用", icon='ARMATURE_DATA')
+        layout.separator()
         layout.operator(SAMPLE_OT_MergeDoubles.bl_idname, text="重複頂点マージ", icon='MESH_CUBE')
         layout.separator()
         layout.operator(SAMPLE_OT_ScaleToZero.bl_idname, text="アクティブ要素基準 → 座標統一", icon='SNAP_PEEL_OBJECT')
@@ -429,6 +487,8 @@ classes = [
     SAMPLE_OT_RotateY90,
     SAMPLE_OT_RotateZ90,
     SAMPLE_OT_ApplyRotationScale,
+    SAMPLE_OT_ResetPose,
+    SAMPLE_OT_ApplyPoseAsRest,
     SAMPLE_OT_MergeDoubles,
     SAMPLE_OT_ScaleToZero,
     SAMPLE_OT_SpinObjects,
